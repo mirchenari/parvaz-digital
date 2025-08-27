@@ -56,7 +56,7 @@ export default function Account() {
           }
           return data;
         })
-        .then((e) => {
+        .then((e) => {          
           if (e.isDone) {
             setIsPass(true);
             setIsLoad(false);

@@ -53,7 +53,7 @@ export async function POST(req) {
     await db.collection("captcha").insertOne({
       email: body.email,
       captcha: captchaNumber,
-      expiresAt: new Date(Date.now() + 30000),
+      expiresAt: new Date(Date.now() + 60000),
     });
 
     return new Response(JSON.stringify({ data: sendData }), {
