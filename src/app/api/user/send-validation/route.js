@@ -1,13 +1,19 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import promiseClient from "@/lib/mongodb";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req) {
   try {
     const client = await promiseClient;
     const db = client.db("ParvazDigital");
     const body = await req.json();
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
     const userExist = await db
       .collection("users")
@@ -36,10 +42,11 @@ export async function POST(req) {
       Math.floor(Math.random() * 1_000_000)
     ).padStart(6, "0");
 
-    const sendData = await resend.emails.send({
-      from: "ParvazDigital <onboarding@resend.dev>",
+    const sendData = await transporter.sendMail({
+      from: process.env.EMAIL_USER,
       to: body.email,
       subject: "ایمیل خود را تایید کنید.",
+      text: captchaNumber,
       html: `<h1> ${captchaNumber} </h1> <p>این کد را به هیچ کس ندهید!</p>`,
     });
 

@@ -57,11 +57,6 @@ export default function Account() {
           return data;
         })
         .then((e) => {
-          console.log(e);
-          if (e.data.error) {
-            throw new Error(e.data.error.error);
-          }
-          
           if (e.isDone) {
             setIsPass(true);
             setIsLoad(false);
