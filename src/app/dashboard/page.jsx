@@ -1,33 +1,13 @@
 "use client";
-import { useContext, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import UserContext from "@/context/usercontext";
-import AdminDash from "./adminDash";
-import UserDash from "./userDash";
 
-export default function Dashboard() {
-  const route = useRouter();
-  const { logedUser, logout } = useContext(UserContext);
-  const searchParams = useSearchParams();
-  const select = searchParams.get("select") || "orders";
-  const editId = searchParams.get("edit-id");
+import dynamic from "next/dynamic";
+import Spinner from "@/components/UI/spinner";
 
-  useEffect(() => {
-    if (typeof logedUser === "undefined") {
-      route.push("/account");
-    }
-  }, [logedUser]);
+const DashPage = dynamic(() => import("./manageDahPage"), {
+  ssr: false,
+  loading: () => <Spinner />,
+});
 
-  if (typeof logedUser !== "undefined") {
-    return logedUser.role === "admin" ? (
-      <AdminDash
-        logedUser={logedUser}
-        logout={logout}
-        select={select}
-        editId={editId}
-      />
-    ) : (
-      <UserDash logedUser={logedUser} logout={logout} select={select} />
-    );
-  }
+export default function Page() {
+  return <DashPage />;
 }
