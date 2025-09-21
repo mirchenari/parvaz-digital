@@ -2,11 +2,14 @@
 
 import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 import UserContext from "@/context/usercontext";
+import CartContext from "@/context/cartcontext";
 import { Btn } from "@/components/UI/btn";
 import Spinner from "@/components/UI/spinner";
 
 export default function Account() {
+  const route = useRouter();
   const [isLoad, setIsLoad] = useState(false);
   const [email, setEmail] = useState("");
   const [isErr, setIsErr] = useState(false);
@@ -16,7 +19,7 @@ export default function Account() {
   const [passAgain, setPassAgain] = useState("");
   const [page, setPage] = useState("email");
   const [captchaIn, setCaptchaIn] = useState("");
-  const { logedUser, login, logout } = useContext(UserContext);
+  const { logedUser, login } = useContext(UserContext);
   const [userValues, setUserValuse] = useState({
     fName: "",
     lName: "",
@@ -24,12 +27,15 @@ export default function Account() {
     address: "",
     post: "",
   });
+  const { cart } = useContext(CartContext);
+  const searchParams = useSearchParams();
+  const backTo = searchParams.get("backTo") || "dashboard";
 
   const inputClass = "border border-gray-200 p-2.5 rounded-lg w-[100%]";
 
   useEffect(() => {
-    if (Object.keys(logedUser).length != 0) {
-      setPage("account");
+    if (typeof logedUser !== "undefined") {
+      route.push(`/${backTo}`);
     } else {
       setPage("email");
     }
@@ -56,7 +62,7 @@ export default function Account() {
           }
           return data;
         })
-        .then((e) => {          
+        .then((e) => {
           if (e.isDone) {
             setIsPass(true);
             setIsLoad(false);
@@ -149,7 +155,6 @@ export default function Account() {
         })
         .then((e) => {
           setIsLoad(false);
-          setPage("account");
           login(e);
         })
         .catch((err) => {
@@ -181,7 +186,6 @@ export default function Account() {
         })
         .then((e) => {
           setIsLoad(false);
-          setPage("account");
           login(e);
         })
         .catch((err) => {
@@ -192,7 +196,7 @@ export default function Account() {
     }
   }
 
-  return page !== "account" ? (
+  return (
     <section className="bg-white fixed inset-0 z-50 grid grid-cols-4">
       <div className="flex relative justify-center">
         {isLoad && <Spinner />}
@@ -226,6 +230,7 @@ export default function Account() {
                   placeholder="ایمیل خود را وارد کنید."
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="username"
                 />
                 <input
                   className={inputClass + (!isPass ? " hidden" : "")}
@@ -233,6 +238,7 @@ export default function Account() {
                   placeholder="رمز عبور خود را وارد کنید."
                   value={pass}
                   onChange={(e) => setPass(e.target.value)}
+                  autoComplete="current-password"
                 />
               </>
             ) : page === "validation" ? (
@@ -252,6 +258,7 @@ export default function Account() {
                     placeholder="رمز عبور خود را وارد کنید."
                     value={pass}
                     onChange={(e) => setPass(e.target.value)}
+                    autoComplete="new-password"
                   />
                   <input
                     className={inputClass}
@@ -259,6 +266,7 @@ export default function Account() {
                     placeholder="رمز عبور خود را دوباره وارد کنید."
                     value={passAgain}
                     onChange={(e) => setPassAgain(e.target.value)}
+                    autoComplete="new-password"
                   />
                   <input
                     className={inputClass}
@@ -306,13 +314,6 @@ export default function Account() {
       <div className="col-span-3 relative">
         <Image src="/image/account-banner.webp" fill alt="account" />
       </div>
-    </section>
-  ) : (
-    <section>
-      <h1>
-        سلام {logedUser.fName} {logedUser.lName}
-      </h1>
-      <Btn onClick={logout}>خروج</Btn>
     </section>
   );
 }

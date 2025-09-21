@@ -8,30 +8,40 @@ function handleSetUser(state, action) {
     case "login":
       return action.user;
     case "logout":
-      return {};
+      return undefined;
     default:
       return state;
   }
 }
 
 export const UserProvider = ({ children }) => {
-  const [logedUser, dispacth] = useReducer(handleSetUser, {});
+  const [logedUser, dispacth] = useReducer(handleSetUser);
 
-  //   useEffect(() => {
-  //   },[])
+  useEffect(() => {
+    let user = localStorage.getItem("user");
+    if (user) {
+      dispacth({ type: "login", user: JSON.parse(user) });
+    }
+  }, []);
 
   function login(user) {
     dispacth({ type: "login", user: user });
-    localStorage.setItem("userId", user.id);
+    localStorage.setItem("user", JSON.stringify(user));
   }
 
   function logout() {
     dispacth({ type: "logout" });
-    localStorage.removeItem("userId");
+    localStorage.removeItem("user");
+  }
+
+  function setActiveOrder(orderId) {
+    let newUser = { ...logedUser };
+    newUser.activeOrder = orderId;
+    dispacth({ type: "login", user: newUser });
   }
 
   return (
-    <UserContext.Provider value={{ logedUser, login, logout }}>
+    <UserContext.Provider value={{ logedUser, login, logout, setActiveOrder }}>
       {children}
     </UserContext.Provider>
   );

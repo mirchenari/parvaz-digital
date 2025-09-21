@@ -1,18 +1,62 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProductPreview from "./ProductPreview";
+import Spinner from "../UI/spinner";
 
 export default function CategoryPreview({ category }) {
+  const [categoryId, setCategoryId] = useState("");
+  const [products, setProducts] = useState([]);
+  const [isLoad, setIsLoad] = useState(true);
   const scroll = useRef(null);
 
-  const exampleProduct = {
-    title: "لپ تاپ ایسوس 15.6 اینچی مدل Vivobook 15 X1504VA i3 1315U 8GB",
-    currentImage:
-      "https://www.technolife.com/image/small_product-TLP-55931_0af36dcc-5633-43e8-bc15-3d84489379d8.png",
-    price: "18،980،000",
-  };
+  function getId() {
+    fetch("/api/get-data/categories")
+      .then(async (e) => {
+        let data = await e.json();
+        if (!e.ok) {
+          throw new Error(data.message);
+        }
+        return data;
+      })
+      .then((e) => {
+        let categoryArray = e.filter((item) => item.title === category);
+        if (categoryArray.length > 0) {
+          setCategoryId(categoryArray[0]._id);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  function getData() {
+    fetch("/api/get-data/products")
+      .then(async (e) => {
+        let data = await e.json();
+        if (!e.ok) {
+          throw new Error(data.message);
+        }
+        return data;
+      })
+      .then((e) => {
+        let productsArray = e.filter((item) => item.categoryId == categoryId);
+        setProducts(productsArray);
+        setIsLoad(false);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  useEffect(getId, []);
+
+  useEffect(() => {
+    if (categoryId) {
+      getData();
+    }
+  }, [categoryId]);
 
   function handleScroll(dir) {
     let scrollDiv = scroll.current;
@@ -24,10 +68,11 @@ export default function CategoryPreview({ category }) {
   }
 
   return (
-    <section className="border-[#919EBC] border-[1px] rounded-2xl p-7 relative m-10">
+    <section className="border-[#919EBC] border-[1px] rounded-2xl p-7 relative m-10 overflow-hidden">
+      {isLoad && <Spinner/>}
       <div className="flex justify-between mb-5">
         <div>
-          <h3 className="font-bold text-2xl">لپ تاپ ها در پرواز دیجیتال</h3>
+          <h3 className="font-bold text-2xl">{category} ها در پرواز دیجیتال</h3>
         </div>
         <div>
           <Link href="/" className="text-blue-500">
@@ -51,14 +96,9 @@ export default function CategoryPreview({ category }) {
             className="bg-white text-2xl shadow flex items-center justify-center rounded-full w-10 h-10"
           >{`>`}</button>
         </div>
-        <ProductPreview product={exampleProduct} />
-        <ProductPreview product={exampleProduct} />
-        <ProductPreview product={exampleProduct} />
-        <ProductPreview product={exampleProduct} />
-        <ProductPreview product={exampleProduct} />
-        <ProductPreview product={exampleProduct} />
-        <ProductPreview product={exampleProduct} />
-        <ProductPreview product={exampleProduct} />
+        {products.map((item) => (
+          <ProductPreview key={item._id} product={item} />
+        ))}
       </div>
     </section>
   );

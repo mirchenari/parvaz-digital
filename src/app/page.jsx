@@ -12,7 +12,7 @@ export default function Home() {
           </div>
         </Link>
       </section>
-      <CategoryPreview />
+      <CategoryPreview category="لپ تاپ" />
       <section className="flex flex-col items-center gap-5 m-10">
         <div>
           <h4 className="font-bold text-2xl">برترین های موبایل</h4>
@@ -60,7 +60,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <CategoryPreview />
+      <CategoryPreview category="آیفون" />
       <section className="flex gap-10 m-10">
         <div className="flex-1">
           <Link href="/">
@@ -87,7 +87,7 @@ export default function Home() {
           </Link>
         </div>
       </section>
-      <CategoryPreview />
+      <CategoryPreview category="سامسونگ" />
     </>
   );
 }

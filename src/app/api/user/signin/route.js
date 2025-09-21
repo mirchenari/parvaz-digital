@@ -32,11 +32,15 @@ export async function POST(req) {
 
     return new Response(
       JSON.stringify({
+        id: userExist._id,
         email: userExist.email,
         fName: userExist.fName,
         lName: userExist.lName,
         address: userExist.address,
         post: userExist.post,
+        role: userExist.role || "user",
+        cart: userExist.cart || [],
+        activeOrder: userExist.activeOrder,
       }),
       {
         status: 200,

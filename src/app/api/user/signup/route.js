@@ -32,12 +32,15 @@ export async function POST(req) {
       password: hashPass,
     };
 
-    await db.collection("users").insertOne(user);
+    const postResult = await db.collection("users").insertOne(user);
 
-    return new Response(JSON.stringify({ ...body }), {
-      status: 201,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ ...body, id: postResult.insertedId }),
+      {
+        status: 201,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   } catch (error) {
     return new Response(JSON.stringify({ message: error.message }), {
       status: 500,
