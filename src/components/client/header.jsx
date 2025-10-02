@@ -248,7 +248,12 @@ export default function Header() {
                 {categories.map((item) => (
                   <Link
                     key={item._id}
-                    href={`/category/${buildUrl(item.title)}?category=${item._id}`}
+                    href={`/category/${buildUrl(item.title)}?category=${
+                      item._id
+                    }`}
+                    onClick={() => {
+                      setIsSideBar(false);
+                    }}
                   >
                     {item.title}
                   </Link>
