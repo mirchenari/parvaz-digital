@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Spinner from "@/components/UI/spinner";
+import { Suspense } from "react";
 
 const Account = dynamic(() => import("./accountComponent"), {
   ssr: false,
@@ -9,5 +10,9 @@ const Account = dynamic(() => import("./accountComponent"), {
 });
 
 export default function Page() {
-  return <Account />;
+  return (
+    <Suspense fallback={<Spinner />}>
+      <Account />
+    </Suspense>
+  );
 }
