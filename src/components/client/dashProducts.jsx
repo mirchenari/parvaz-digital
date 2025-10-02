@@ -109,12 +109,12 @@ export default function DashProducts() {
               }
             }}
           >
-            <div className="flex items-center justify-between p-2.5">
+            <div className="flex items-center justify-between gap-5 p-2.5">
               <div className="flex flex-col gap-2.5">
-                <h4 className="text-lg font-bold">{e.title}</h4>
+                <h4 className="text-lg font-bold text-justify">{e.title}</h4>
                 <p>موجودی: {e.stock}</p>
               </div>
-              <div className="flex gap-2.5">
+              <div className="flex flex-col sm:flex-row gap-2.5">
                 <Btn
                   onClick={() => {
                     route.push(`/dashboard?select=editProduct&edit-id=${e._id}`);
@@ -156,7 +156,7 @@ export default function DashProducts() {
                     />
                   </div>
                 </div>
-                <div className="col-span-3 flex flex-col gap-4">
+                <div className="col-span-3 mr-5 flex flex-col gap-4">
                   <div>
                     <p className="line-clamp-4">{e.description}</p>
                   </div>

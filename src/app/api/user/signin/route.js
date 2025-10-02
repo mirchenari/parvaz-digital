@@ -39,7 +39,6 @@ export async function POST(req) {
         address: userExist.address,
         post: userExist.post,
         role: userExist.role || "user",
-        cart: userExist.cart || [],
         activeOrder: userExist.activeOrder,
       }),
       {

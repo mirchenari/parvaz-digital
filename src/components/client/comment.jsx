@@ -2,6 +2,7 @@
 
 import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComments, faUser, faXmark } from "@fortawesome/free-solid-svg-icons";
 import UserContext from "@/context/usercontext";
@@ -77,8 +78,13 @@ function AddComment({ product, close }) {
   }
 
   return (
-    <section className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center">
-      <div className="bg-white p-5 max-w-[30%] rounded-xl flex flex-col gap-7 relative overflow-hidden">
+    <motion.section
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center"
+    >
+      <div className="bg-white p-5 max-w-[95%] xl:max-w-[30%] rounded-xl flex flex-col gap-7 relative overflow-hidden">
         {isLoad && <Spinner />}
         <div className="flex justify-between items-center pb-5 border-b-2 border-b-gray-300">
           <div>
@@ -117,10 +123,7 @@ function AddComment({ product, close }) {
           <div className="mb-2.5">
             <h4>به این کالا امیتاز دهید.</h4>
           </div>
-          <div
-            className="flex justify-center gap-4 *:cursor-pointer"
-            id="score"
-          >
+          <div className="flex justify-evenly *:cursor-pointer" id="score">
             <Image
               src={`/image/static_${
                 values.score == 5 ? "c" : ""
@@ -184,7 +187,7 @@ function AddComment({ product, close }) {
           </form>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 
@@ -281,10 +284,12 @@ export default function Comment({ product }) {
 
   return (
     <>
-      {isShowAddBox && (
-        <AddComment product={product} close={() => setIsShowAddBox(false)} />
-      )}
-      <div className="grid grid-cols-3 relative mt-5 px-2">
+      <AnimatePresence>
+        {isShowAddBox && (
+          <AddComment product={product} close={() => setIsShowAddBox(false)} />
+        )}
+      </AnimatePresence>
+      <div className="flex flex-col-reverse gap-2.5 sm:grid grid-cols-3 relative mt-5">
         {isLoad && <Spinner />}
         <div className="col-span-2 p-2.5 flex flex-col gap-4">
           {!comments.some((e) => e.isConfirm) ? (
@@ -326,7 +331,7 @@ export default function Comment({ product }) {
             }}
           >
             {comments.length !== 0 && (
-              <div className="grid grid-cols-2 items-center justify-items-center">
+              <div className="grid grid-cols-2 items-center justify-items-center px-2.5 sm:px-0">
                 <div className="flex flex-col-reverse w-full">
                   {handleUIAverage(comments)}
                 </div>

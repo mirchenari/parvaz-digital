@@ -7,6 +7,7 @@ import Spinner from "../UI/spinner";
 import { Btn } from "../UI/btn";
 import buildUrl from "@/functions/buildUrl";
 import handleStars from "@/functions/handleStars";
+import Confirm from "../UI/confirm";
 
 export default function DashComments() {
   const [comments, setComments] = useState([]);
@@ -14,6 +15,11 @@ export default function DashComments() {
   const [isLoad, setIsLoad] = useState(false);
   const div = useRef(null);
   const [height, setHeight] = useState(0);
+  const [confirm, setConfirm] = useState({
+    isShow: false,
+    text: "",
+    onOk: null,
+  });
 
   function getData() {
     setIsLoad(true);
@@ -26,7 +32,7 @@ export default function DashComments() {
         return data;
       })
       .then((e) => {
-        setComments(e);
+        setComments([...e].reverse());
         setIsLoad(false);
       })
       .catch((err) => {
@@ -74,6 +80,18 @@ export default function DashComments() {
   return (
     <section>
       {isLoad && <Spinner />}
+      <Confirm
+        isShow={confirm.isShow}
+        onOk={confirm.onOk}
+        text={confirm.text}
+        onCancel={() => {
+          setConfirm({
+            isShow: false,
+            text: "",
+            onOk: null,
+          });
+        }}
+      />
       {comments.map((e) => (
         <motion.div
           layout
@@ -98,7 +116,13 @@ export default function DashComments() {
               {!e.isConfirm && (
                 <Btn
                   onClick={() => {
-                    handleApi(e._id, "PUT");
+                    setConfirm({
+                      isShow: true,
+                      text: "آیا از تایید این نظر مطمئن هستید؟",
+                      onOk: () => {
+                        handleApi(e._id, "PUT");
+                      },
+                    });
                   }}
                 >
                   تایید
@@ -107,7 +131,13 @@ export default function DashComments() {
               <Btn
                 color="red"
                 onClick={() => {
-                  handleApi(e._id, "DELETE");
+                  setConfirm({
+                    isShow: true,
+                    text: "از حذف این نظر مطمئن هستید؟",
+                    onOk: () => {
+                      handleApi(e._id, "DELETE");
+                    },
+                  });
                 }}
               >
                 حذف
@@ -123,7 +153,7 @@ export default function DashComments() {
             className="overflow-hidden"
           >
             <div ref={more == e._id ? div : null}>
-              <div className="grid mt-2.5 grid-cols-4 gap-2.5 *:bg-white *:rounded-lg *:flex *:justify-center *:items-center *:p-2.5">
+              <div className="flex flex-col sm:grid mt-2.5 grid-cols-4 gap-2.5 *:bg-white *:rounded-lg *:flex *:justify-center *:items-center *:p-2.5">
                 <div>
                   <p>{e.userName}</p>
                 </div>

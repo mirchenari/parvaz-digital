@@ -2,18 +2,29 @@
 
 import { useContext, useEffect, useState } from "react";
 import CartContext from "@/context/cartcontext";
+import UserContext from "@/context/usercontext";
 import { Btn } from "../UI/btn";
 import { useRouter } from "next/navigation";
 import handleHeaderHeight from "@/functions/setHeaderHeight";
 
 export default function AddToCart({ product }) {
   const { cart, addToCart, removeFromCart } = useContext(CartContext);
+  const { logedUser } = useContext(UserContext);
   const [headerHeight, setHeaderHeight] = useState(0);
   const [isInCart, setIsInCart] = useState(false);
   const route = useRouter();
 
   useEffect(() => {
     handleHeaderHeight(setHeaderHeight);
+    const footer = document.querySelector("footer");
+    if (footer) {
+      if (footer.offsetWidth < 640) {
+        footer.style.marginBottom = "135px";
+      }
+    }
+    return () => {
+      footer.style.marginBottom = 0;
+    };
   }, []);
 
   useEffect(() => {
@@ -26,11 +37,11 @@ export default function AddToCart({ product }) {
     } else {
       setIsInCart(false);
     }
-  });
+  }, [cart]);
 
   return (
     <div
-      className="flex flex-col items-end gap-5 rounded-2xl p-5 sticky personal-shadow"
+      className="flex flex-col items-end gap-5 sm:rounded-2xl p-5 sticky personal-shadow"
       style={{
         top: `${headerHeight + 10}px`,
         transitionDuration: "0.1s",
@@ -54,7 +65,7 @@ export default function AddToCart({ product }) {
           <div className="grid grid-cols-4">
             <button
               onClick={() => {
-                removeFromCart(product._id);
+                removeFromCart(product._id, logedUser ? logedUser.id : null);
               }}
               className="text-[#223C78] font-bold"
             >

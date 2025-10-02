@@ -6,8 +6,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import UserContext from "@/context/usercontext";
 import { Btn } from "@/components/UI/btn";
 import Spinner from "@/components/UI/spinner";
+import Timer from "@/components/client/timer";
 
-export default function Account() {
+export default function AccountComponent() {
   const route = useRouter();
   const [isLoad, setIsLoad] = useState(false);
   const [email, setEmail] = useState("");
@@ -48,6 +49,7 @@ export default function Account() {
       setErrMess("ایمیل خود را به درستی وارد کنید.");
     } else {
       setIsLoad(true);
+      setIsErr(false);
       fetch("/api/user/send-validation", {
         method: "POST",
         body: JSON.stringify({ email: email.trim() }),
@@ -86,6 +88,7 @@ export default function Account() {
       setErrMess("عدد را به درستی وارد کنید");
     } else {
       setIsLoad(true);
+      setIsErr(false);
       fetch("/api/user/validation", {
         method: "POST",
         body: JSON.stringify({
@@ -139,6 +142,7 @@ export default function Account() {
       setErrMess("اطلاعات خواسته شده را وارد کنید.");
     } else {
       setIsLoad(true);
+      setIsErr(false);
       fetch("/api/user/signup", {
         method: "POST",
         body: JSON.stringify({ email: email, ...userValues, password: pass }),
@@ -170,6 +174,7 @@ export default function Account() {
       setErrMess("رمز عبور را وارد کنید.");
     } else {
       setIsLoad(true);
+      setIsErr(false);
       fetch("/api/user/signin", {
         method: "POST",
         body: JSON.stringify({ email: email, password: pass }),
@@ -195,23 +200,12 @@ export default function Account() {
   }
 
   return (
-    <section className="bg-white fixed inset-0 z-50 grid grid-cols-4">
-      <div className="flex relative justify-center">
+    <section className="bg-white fixed inset-0 z-40 sm:grid grid-cols-4 flex max-sm:justify-center max-sm:items-center">
+      <div className="flex relative justify-center z-50 bg-white max-sm:min-w-[85%] max-sm:py-5 max-sm:rounded-2xl">
         {isLoad && <Spinner />}
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            if (page === "email") {
-              if (!isPass) {
-                sendValidation();
-              } else {
-                handleLogin();
-              }
-            } else if (page === "validation") {
-              validation();
-            } else if (page === "signup") {
-              handleSignup();
-            }
           }}
           className="flex flex-col justify-center items-center gap-10 w-[85%] *:w-[100%] *:flex *:justify-center"
         >
@@ -223,10 +217,11 @@ export default function Account() {
             {page === "email" ? (
               <>
                 <input
-                  className={inputClass}
+                  className={inputClass + (isPass ? " text-gray-500" : "")}
                   type="text"
                   placeholder="ایمیل خود را وارد کنید."
                   value={email}
+                  readOnly={isPass}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="username"
                 />
@@ -240,13 +235,18 @@ export default function Account() {
                 />
               </>
             ) : page === "validation" ? (
-              <input
-                className={inputClass}
-                type="text"
-                placeholder="عدد ارسال شده به ایمیل خود را وارد کیند."
-                value={captchaIn}
-                onChange={(e) => setCaptchaIn(e.target.value)}
-              />
+              <div className="flex items-center gap-2.5">
+                <input
+                  className={inputClass}
+                  type="text"
+                  placeholder="عدد ارسال شده به ایمیل خود را وارد کنید."
+                  value={captchaIn}
+                  onChange={(e) => setCaptchaIn(e.target.value)}
+                />
+                <div className="w-7">
+                  <Timer inputTime={60} />
+                </div>
+              </div>
             ) : (
               page === "signup" && (
                 <>
@@ -304,13 +304,47 @@ export default function Account() {
               )
             )}
           </div>
-          <div>
-            <Btn>ادامه</Btn>
+          <div className="flex gap-5">
+            <Btn
+              onClick={() => {
+                if (page === "email") {
+                  if (!isPass) {
+                    sendValidation();
+                  } else {
+                    handleLogin();
+                  }
+                } else if (page === "validation") {
+                  validation();
+                } else if (page === "signup") {
+                  handleSignup();
+                }
+              }}
+            >
+              ادامه
+            </Btn>
+            <Btn
+              onClick={() => {
+                route.push("/");
+              }}
+            >
+              صفحه اصلی
+            </Btn>
           </div>
         </form>
       </div>
-      <div className="col-span-3 relative">
-        <Image src="/image/account-banner.webp" fill alt="account" />
+      <div className="absolute inset-0 sm:col-span-3 sm:relative">
+        <Image
+          src="/image/account-banner.webp"
+          fill
+          alt="account"
+          className="hidden sm:block"
+        />
+        <Image
+          src="/image/mobile-account-banner.jpeg"
+          fill
+          alt="account"
+          className="sm:hidden"
+        />
       </div>
     </section>
   );

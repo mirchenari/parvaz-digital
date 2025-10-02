@@ -38,10 +38,18 @@ export const UserProvider = ({ children }) => {
     let newUser = { ...logedUser };
     newUser.activeOrder = orderId;
     dispacth({ type: "login", user: newUser });
+    localStorage.setItem("user", JSON.stringify(newUser));
+  }
+
+  function delActiveOrder() {
+    let newUser = { ...logedUser };
+    delete newUser.activeOrder;
+    dispacth({ type: "login", user: newUser });
+    localStorage.setItem("user", JSON.stringify(newUser));
   }
 
   return (
-    <UserContext.Provider value={{ logedUser, login, logout, setActiveOrder }}>
+    <UserContext.Provider value={{ logedUser, login, logout, setActiveOrder, delActiveOrder }}>
       {children}
     </UserContext.Provider>
   );

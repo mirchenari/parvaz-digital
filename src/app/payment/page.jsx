@@ -1,13 +1,9 @@
-"use client"
+import ManagedPage from "./managePage";
 
-import dynamic from "next/dynamic";
-import Spinner from "@/components/UI/spinner";
-
-const Payment = dynamic(() => import("./paymentComponent"), {
-  ssr: false,
-  loading: () => <Spinner />,
-});
+export const metadata = {
+  title: "تایید سفارش | پرواز دیجیتال",
+};
 
 export default function Page() {
-  return <Payment />;
+  return <ManagedPage />;
 }

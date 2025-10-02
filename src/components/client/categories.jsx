@@ -138,12 +138,12 @@ export default function Categories() {
             {data.map((e) => (
               <div
                 key={e._id}
-                className="bg-gray-200 py-1.5 px-3.5 rounded-sm flex justify-between items-center"
+                className="bg-gray-200 py-1.5 px-3.5 rounded-lg flex justify-between items-center"
               >
                 <h4 className="text-lg">
                   {e.title}(تعداد محصول: {e.productsNum})
                 </h4>
-                <div className="flex gap-2.5">
+                <div className="flex flex-col my-2.5 sm:flex-row gap-2.5">
                   <Btn
                     onClick={() => {
                       setCategorySelect(e._id);
@@ -176,7 +176,7 @@ export default function Categories() {
         </div>
         <div className={`flex justify-center items-center`}>
           <form
-            className="relative flex flex-col gap-5 w-[70%] bg-gray-200 p-4 rounded-lg"
+            className="relative flex flex-col gap-5 w-full sm:w-[70%] bg-gray-200 p-4 rounded-lg"
             onSubmit={(e) => {
               e.preventDefault();
               if (title.trim() === "") {

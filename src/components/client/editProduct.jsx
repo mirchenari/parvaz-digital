@@ -112,7 +112,7 @@ export default function EditProduct({ id }) {
             e.preventDefault();
             handleEditProduct();
           }}
-          className="relative flex flex-col gap-5 w-[70%] bg-gray-200 p-4 rounded-lg"
+          className="relative flex flex-col gap-5 w-full sm:w-[70%] my-5 bg-gray-200 p-4 rounded-lg"
         >
           {mess.isMess && (
             <p

@@ -1,13 +1,9 @@
-"use client"
+import Page from "./managePage";
 
-import dynamic from "next/dynamic";
-import Spinner from "@/components/UI/spinner";
+export const metadata = {
+  title: "ورود به حساب کاربری | پرواز دیجیتال",
+};
 
-const Account = dynamic(() => import("./accountComponent"), {
-  ssr: false,
-  loading: () => <Spinner />,
-});
-
-export default function Page() {
-  return <Account />;
+export default function Account() {
+  return <Page />;
 }

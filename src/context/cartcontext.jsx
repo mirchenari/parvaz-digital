@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useReducer } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
+import UserContext from "./usercontext";
 
 const CartContext = React.createContext();
 
@@ -19,6 +20,30 @@ function handleChangeCart(state, action) {
 
 export function CartProvider({ children }) {
   const [cart, dispacth] = useReducer(handleChangeCart, []);
+  const { logedUser, delActiveOrder } = useContext(UserContext);
+
+  useEffect(() => {
+    if (logedUser) {
+      if (logedUser.activeOrder) {
+        fetch(`/api/get-data/orders/${logedUser.activeOrder}`)
+          .then(async (e) => {
+            if (e.status != 204) {
+              let data = await e.json();
+              if (!e.ok) {
+                throw new Error(data.message);
+              }
+              return data;
+            }
+          })
+          .then((e) => {
+            dispacth({ type: "setCart", cart: e.cart });
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    }
+  }, [logedUser]);
 
   useEffect(() => {
     if (cart.length != 0) {
@@ -33,6 +58,30 @@ export function CartProvider({ children }) {
     }
   }, []);
 
+  function delOrder(userId) {
+    fetch("/api/order", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: userId }),
+    })
+      .then(async (e) => {
+        if (e.status != 204) {
+          let data = await e.json();
+          if (!e.ok) {
+            throw new Error(data.message);
+          }
+          return data;
+        }
+      })
+      .then((e) => {
+        console.log(e);
+        delActiveOrder();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
   function addToCart(newProductId) {
     let productIndex = cart.findIndex((item) => item.id == newProductId);
     if (productIndex != -1) {
@@ -44,7 +93,7 @@ export function CartProvider({ children }) {
     }
   }
 
-  function removeFromCart(productId) {
+  function removeFromCart(productId, userId) {
     let productIndex = cart.findIndex((item) => item.id == productId);
     let newCart = [...cart];
     if (cart[productIndex].num != 1) {
@@ -56,6 +105,9 @@ export function CartProvider({ children }) {
     } else {
       if (cart.length == 1) {
         localStorage.removeItem("cart");
+        if (userId) {
+          delOrder(userId);
+        }
       }
       dispacth({
         type: "setCart",
@@ -64,9 +116,12 @@ export function CartProvider({ children }) {
     }
   }
 
-  function removeAll() {
+  function removeAll(userId) {
     dispacth({ type: "setCart", cart: [] });
     localStorage.removeItem("cart");
+    if (userId) {
+      delOrder(userId);
+    }
   }
 
   function getTotalNum() {

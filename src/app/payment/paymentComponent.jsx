@@ -47,7 +47,7 @@ export default function PaymentPage() {
     return <Spinner />;
   } else {
     return (
-      <section className="px-10 my-5 grid grid-cols-3 gap-10">
+      <section className="px-5 sm:px-10 my-5 flex flex-col-reverse sm:grid grid-cols-3 gap-10">
         <div className="col-span-2 flex flex-col gap-5">
           <div className="flex flex-col gap-2.5">
             <div className="px-2.5 flex justify-between">
@@ -58,9 +58,12 @@ export default function PaymentPage() {
             </div>
             <div className="border border-gray-300 rounded-xl p-5">
               <div className="pb-5 font-bold border-b-2 border-gray-300 text-center">
-                <p>مجموع مبلغ محصولات: {getTotalPrice(order.cart, products)}</p>
+                <p>
+                  مجموع مبلغ محصولات: <br className="sm:hidden" />
+                  {getTotalPrice(order.cart, products)}
+                </p>
               </div>
-              <div className="pt-5 flex gap-5">
+              <div className="pt-5 grid grid-cols-4 gap-5">
                 {products.map((item) => (
                   <div
                     key={item._id}

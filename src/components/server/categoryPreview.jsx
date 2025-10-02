@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import ProductPreview from "./ProductPreview";
 import Spinner from "../UI/spinner";
@@ -68,29 +67,24 @@ export default function CategoryPreview({ category }) {
   }
 
   return (
-    <section className="border-[#919EBC] border-[1px] rounded-2xl p-7 relative m-10 overflow-hidden">
-      {isLoad && <Spinner/>}
-      <div className="flex justify-between mb-5">
+    <section className="border-[#919EBC] border-[1px] rounded-2xl p-7 relative m-5 sm:m-10 overflow-hidden">
+      {isLoad && <Spinner />}
+      <div className="mb-5">
         <div>
-          <h3 className="font-bold text-2xl">{category} ها در پرواز دیجیتال</h3>
-        </div>
-        <div>
-          <Link href="/" className="text-blue-500">
-            نمایش همه <span>{`>`}</span>
-          </Link>
+          <h3 className="font-bold text-xl sm:text-2xl">{category} ها در پرواز دیجیتال</h3>
         </div>
       </div>
       <div
         ref={scroll}
         className="flex overflow-x-auto overflow-y-hidden scroll-smooth scrollbar-hide"
       >
-        <div className="absolute right-2.5 top-1/2 -translate-y-1/2">
+        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 hidden sm:block">
           <button
             onClick={() => handleScroll("right")}
             className="bg-white text-2xl shadow flex items-center justify-center rounded-full w-10 h-10"
           >{`<`}</button>
         </div>
-        <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
+        <div className="absolute left-2.5 top-1/2 -translate-y-1/2 hidden sm:block">
           <button
             onClick={() => handleScroll("left")}
             className="bg-white text-2xl shadow flex items-center justify-center rounded-full w-10 h-10"

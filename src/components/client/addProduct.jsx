@@ -93,7 +93,7 @@ export default function AddProduct() {
           e.preventDefault();
           handleAddProduct();
         }}
-        className="relative flex flex-col gap-5 w-[70%] bg-gray-200 p-4 rounded-lg"
+        className="relative flex flex-col gap-5 w-full my-5 sm sm:w-[70%] bg-gray-200 p-4 rounded-lg"
       >
         {isLoad && <Spinner />}
         {err.isErr && <p className="text-red-500 text-center">{err.errMess}</p>}

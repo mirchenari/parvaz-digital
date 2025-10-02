@@ -1,13 +1,9 @@
-"use client";
+import ManagedPage from "./managePage";
 
-import dynamic from "next/dynamic";
-import Spinner from "@/components/UI/spinner";
+export const metadata = {
+  title: "پنل کاربری | پرواز دیجیتال",
+};
 
-const DashPage = dynamic(() => import("./manageDahPage"), {
-  ssr: false,
-  loading: () => <Spinner />,
-});
-
-export default function Page() {
-  return <DashPage />;
+export default function Page(params) {
+  return <ManagedPage />;
 }
