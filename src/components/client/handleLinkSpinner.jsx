@@ -14,6 +14,7 @@ export default function HandleLinkSpinner() {
     function showSpinner(e) {
       const link = e.target.closest("a");
       if (!link) return;
+      if (link.getAttribute("target") == "_blank") return;
       const url = new URL(link.href, window.location.origin);
       if (url.pathname != window.location.pathname) {
         setIsLoad(true);
