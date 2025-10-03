@@ -4,6 +4,7 @@ import { UserProvider } from "@/context/usercontext";
 import { CartProvider } from "@/context/cartcontext";
 import Header from "@/components/client/header";
 import Footer from "@/components/server/footer";
+import HandleLinkSpinner from "@/components/client/handleLinkSpinner";
 
 export const metadata = {
   icons: "/image/favicon.png",
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
       <body>
         <UserProvider>
           <CartProvider>
+            <HandleLinkSpinner />
             <Header />
             <main className="sm:pt-[156px]">{children}</main>
             <Footer />

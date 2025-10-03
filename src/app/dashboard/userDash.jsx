@@ -107,7 +107,7 @@ export default function UserDash() {
         exit={{ opacity: 0 }}
         className="fixed inset-0 flex justify-center items-center bg-black/30 z-40"
       >
-        <div className="bg-white p-5 min-w-[50%] rounded-2xl">
+        <div className="bg-white p-5 w-[90%] sm:max-w-[50%] rounded-2xl">
           <div className="flex justify-between pb-5 mb-2.5 border-b-2 border-gray-300">
             <p className="font-bold text-lg">ویرایش اطلاعات کاربری</p>
             <button
