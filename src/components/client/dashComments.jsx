@@ -82,7 +82,10 @@ export default function DashComments() {
       {isLoad && <Spinner />}
       <Confirm
         isShow={confirm.isShow}
-        onOk={confirm.onOk}
+        onOk={() => {
+          confirm.onOk();
+          setConfirm((prev) => ({ ...prev, isShow: false }));
+        }}
         text={confirm.text}
         onCancel={() => {
           setConfirm({

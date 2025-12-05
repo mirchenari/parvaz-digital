@@ -127,7 +127,10 @@ export default function Categories() {
       <Confirm
         isShow={confirm.isShow}
         onCancel={() => setConfirm({ isShow: false })}
-        onOk={confirm.onOk}
+        onOk={() => {
+          confirm.onOk();
+          setConfirm((prev) => ({ ...prev, isShow: false }));
+        }}
         text={confirm.text}
         warningTxt={confirm.warText}
       />

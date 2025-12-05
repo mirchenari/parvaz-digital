@@ -151,14 +151,14 @@ export default function AdminDash({ logout, select, editId }) {
         </div>
         <div className="flex-1 overflow-auto">
           {isLoad && <Spinner />}
-          {data.length == 0 ? (
-            <h2>هیچ چیزی وجود ندارد...</h2>
-          ) : select == "addProduct" ? (
+          {select == "addProduct" ? (
             <AddProduct />
-          ) : select == "categories" ? (
-            <Categories />
           ) : select == "editProduct" ? (
             <EditProduct id={editId} />
+          ) : data.length == 0 ? (
+            <h2>هیچ چیزی وجود ندارد...</h2>
+          ) : select == "categories" ? (
+            <Categories />
           ) : select == "comments" ? (
             <DashComments />
           ) : select == "orders" ? (

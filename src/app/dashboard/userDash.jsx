@@ -224,16 +224,8 @@ export default function UserDash() {
       <section className="flex flex-col sm:grid grid-cols-3 gap-10 px-5 sm:px-10 py-5">
         <div className="col-span-2 flex flex-col gap-10">
           <div>
-            <div className="flex justify-between px-2.5 mb-2.5">
+            <div className="px-2.5 mb-2.5">
               <p className="text-lg font-bold">اطلاعات شخصی</p>
-              <button
-                className="text-blue-500"
-                onClick={() => {
-                  setIsShowEdit(true);
-                }}
-              >
-                ویرایش
-              </button>
             </div>
             <div className="border border-gray-300 rounded-2xl p-5 flex flex-col sm:grid grid-cols-2 justify-items-center gap-5 text-center">
               {userProfile.map((item, index) => (
@@ -314,6 +306,23 @@ export default function UserDash() {
               </form>
             </div>
           </div>
+          <div className="flex justify-evenly mb-5">
+            <Btn
+              onClick={() => {
+                setIsShowEdit(true);
+              }}
+            >
+              ویرایش اطلاعات شخصی
+            </Btn>
+            <Btn
+              color="red"
+              onClick={() => {
+                logout();
+              }}
+            >
+              خروج از حساب کاربری
+            </Btn>
+          </div>
         </div>
         <div>
           <div
@@ -323,16 +332,8 @@ export default function UserDash() {
               transitionDuration: "0.1s",
             }}
           >
-            <div className="px-2.5 mb-2.5 font-bold text-lg flex justify-between items-center">
+            <div className="px-2.5 mb-2.5 font-bold text-lg">
               <p>سفارش فعال</p>
-              <Btn
-                onClick={() => {
-                  logout();
-                }}
-                color="red"
-              >
-                خروج
-              </Btn>
             </div>
             <div className="personal-shadow p-5 rounded-2xl">
               {logedUser.activeOrder ? (

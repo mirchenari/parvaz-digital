@@ -91,7 +91,10 @@ export default function DashProducts() {
       <Confirm
         isShow={confirm.isShow}
         text={confirm.text}
-        onOk={confirm.onOk}
+        onOk={() => {
+          confirm.onOk();
+          setConfirm((prev) => ({ ...prev, isShow: false }));
+        }}
         onCancel={() => setConfirm({ isShow: false })}
       />
       {isLoad && <Spinner />}
@@ -117,7 +120,9 @@ export default function DashProducts() {
               <div className="flex flex-col sm:flex-row gap-2.5">
                 <Btn
                   onClick={() => {
-                    route.push(`/dashboard?select=editProduct&edit-id=${e._id}`);
+                    route.push(
+                      `/dashboard?select=editProduct&edit-id=${e._id}`
+                    );
                   }}
                 >
                   ویرایش
@@ -161,7 +166,9 @@ export default function DashProducts() {
                     <p className="line-clamp-4">{e.description}</p>
                   </div>
                   <div>
-                    <p className="font-bold">{Number(e.price).toLocaleString("fa-IR") + " تومان"}</p>
+                    <p className="font-bold">
+                      {Number(e.price).toLocaleString("fa-IR") + " تومان"}
+                    </p>
                   </div>
                   <div>
                     <p>دسته بندی: {category}</p>

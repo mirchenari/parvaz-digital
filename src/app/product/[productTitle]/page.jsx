@@ -113,7 +113,7 @@ export default async function ProductDetails({ searchParams }) {
               <Comment product={product} />
             </div>
           </div>
-          <div className="fixed bottom-0 right-0 left-0 bg-white h-[135px] sm:h-auto sm:static z-20">
+          <div className="fixed bottom-0 right-0 left-0 h-[135px] sm:h-auto sm:static z-20">
             <AddToCart product={product} />
           </div>
         </section>

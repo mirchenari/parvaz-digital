@@ -239,7 +239,7 @@ export default function ShipmentPage() {
               </div>
               <div className="bg-[#F3F8FD] rounded-2xl p-5 flex gap-5 justify-between items-center">
                 <div className="flex items-center gap-5">
-                  <div className="text-[#223c78] text-3xl">
+                  <div className="text-[#223c78] text-3xl hidden sm:block">
                     <FontAwesomeIcon icon={faLocationDot} />
                   </div>
                   <div className="flex flex-col gap-2.5">
@@ -276,7 +276,7 @@ export default function ShipmentPage() {
                 {products.map((item) => (
                   <div
                     key={item._id}
-                    className="flex flex-col items-center gap-2.5 max-w-[160px]"
+                    className="flex flex-col justify-evenly items-center gap-2.5 max-w-[160px]"
                   >
                     <div>
                       <img

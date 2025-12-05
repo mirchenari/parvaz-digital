@@ -10,7 +10,7 @@ export default function ProductPreview({ product, isCategory }) {
     >
       <Link
         href={`/product/${buildUrl(product.title)}?product=${product._id}`}
-        className="w-full h-full"
+        className="w-full h-full flex flex-col justify-evenly"
         target="_blank"
       >
         <div className="flex justify-center items-center">

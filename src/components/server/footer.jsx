@@ -34,7 +34,7 @@ export default function Footer() {
       </section>
       <section className="absolute bottom-0 left-0 right-0 text-center pb-2.5">
         <p className="text-xs sm:text-sm">
-          1404 - تمامی حقوق مادی و معنوی این سایت محفوظ می باشد.
+          1404 - طراحی و توسعه توسط <a href="https://chenarcode.ir/" id="footer-link">چنار کد</a>
         </p>
       </section>
     </footer>

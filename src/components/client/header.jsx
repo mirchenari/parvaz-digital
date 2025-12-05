@@ -209,7 +209,7 @@ export default function Header() {
   return (
     <motion.header
       layout
-      className="z-10 bg-white border-b-gray-200 border-b sm:fixed top-0 left-0 right-0"
+      className="z-40 bg-white border-b-gray-200 border-b sm:fixed top-0 left-0 right-0"
     >
       <section className="flex justify-between sm:grid sm:grid-cols-2 h-[100px] px-5 sm:px-10 items-center">
         <div className="sm:hidden text-xl">

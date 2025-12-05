@@ -8,6 +8,7 @@ export default function AddProduct() {
   const [categories, setCategories] = useState([]);
   const [isLoad, setIsLoad] = useState(false);
   const [err, setErr] = useState({ isErr: false, errMess: "" });
+  const [sucMess, setSucMess] = useState("");
   const [values, setValues] = useState({
     title: "",
     description: "",
@@ -41,6 +42,7 @@ export default function AddProduct() {
   }
 
   function handleAddProduct() {
+    setSucMess("");
     if (Object.values(values).some((e) => e.trim() == "")) {
       setErr({
         isErr: true,
@@ -75,6 +77,7 @@ export default function AddProduct() {
             category: "",
           });
           setErr({ isErr: false, errMess: "" });
+          setSucMess("محصول با موفقیت افزوده شد.");
           console.log(e);
         })
         .catch((err) => {
@@ -97,6 +100,7 @@ export default function AddProduct() {
       >
         {isLoad && <Spinner />}
         {err.isErr && <p className="text-red-500 text-center">{err.errMess}</p>}
+        {sucMess && <p className="text-green-500 text-center">{sucMess}</p>}
         <div>
           <input
             className={inputClass}

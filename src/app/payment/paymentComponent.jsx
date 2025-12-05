@@ -67,7 +67,7 @@ export default function PaymentPage() {
                 {products.map((item) => (
                   <div
                     key={item._id}
-                    className="flex flex-col items-center gap-2.5 max-w-[160px]"
+                    className="flex flex-col justify-evenly items-center gap-2.5 max-w-[160px]"
                   >
                     <div>
                       <img
